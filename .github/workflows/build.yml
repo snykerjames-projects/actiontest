@@ -29,7 +29,14 @@ jobs:
         with:
           dotnet-version: 5.0.x
           
-      - name: do the build
+      - name: Restore Deps
         run:
           dotnet restore
+      - name: Build app
+        run:
           dotnet build
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: false
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
